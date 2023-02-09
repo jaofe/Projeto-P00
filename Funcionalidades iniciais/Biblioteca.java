@@ -1,0 +1,189 @@
+import java.util.*;
+
+public class Biblioteca {
+    ArrayList<Usuario> usuarios = new ArrayList<>();
+    ArrayList<Livro> livros = new ArrayList<> ();
+
+    public static void main(String[] args)
+    {
+        Biblioteca biblioteca = new Biblioteca();
+
+        try (Scanner input = new Scanner(System.in)) {
+            while(true)
+            {
+                System.out.println("--------------------------- SEJA BEM-VINDO---------------------------\n");
+                System.out.println("                                MENU\n");
+                System.out.println("1 - Criar Usuário");
+                System.out.println("2 - Cadastrar Livros");
+                System.out.println("3 - Listar Livros");
+                System.out.println("4 - Listar Usuarios");
+                System.out.println("5 - Alugar livro");
+                System.out.println("6 - Devolver livro");
+                System.out.println("7 - Sair");
+                System.out.print("Digite o que deseja fazer: ");
+
+                String opcao = input.nextLine();
+                System.out.print("\n");
+
+                if(opcao.equals("1"))
+                {
+                    cadastrarUsuario(input, biblioteca);
+                }
+                else if (opcao.equals("2")) {
+                    cadastrarLivro(input, biblioteca);
+                }
+                else if (opcao.equals("3")) {
+                    listarLivros(biblioteca);
+                }
+                else if (opcao.equals("4")) {
+                    listarUsuarios(biblioteca);
+                }
+                else if (opcao.equals("5")) {
+                    alugarLivro(input, biblioteca);
+                }
+                else if (opcao.equals("6")) {
+                    devolverLivro(input, biblioteca);
+                }
+                else if (opcao.equals("7"))
+                {
+                    break;
+                }
+                else {
+                    System.out.println("Opcao invalida!");
+                }
+            }
+        }
+
+        System.out.println("\n                           ATÉ A PRÓXIMA!");
+    }
+
+    private static void listarLivros(Biblioteca biblioteca) {
+        biblioteca.listarLivros();
+    }
+    private static void listarUsuarios(Biblioteca biblioteca) {
+        biblioteca.listarUsuarios();
+    }
+
+    private static void devolverLivro(Scanner input, Biblioteca biblioteca) {
+        System.out.print("Digite o seu usuario: ");
+        String username = input.nextLine();
+        Usuario usuario = null;
+
+        for (Usuario u : biblioteca.usuarios) {
+            if (u.username.equals(username))
+                usuario = u;
+        }
+
+        if (usuario == null) {
+            System.out.println("Usuario nao encontrado!");
+            return;
+        }
+
+        System.out.print("Digite o titulo do livro: ");
+        String titulo = input.nextLine();
+        Livro livro = null;
+
+        for (Livro l : biblioteca.livros) {
+            if (l.titulo.equals(titulo))
+                livro = l;
+        }
+
+        if (livro == null) {
+            System.out.println("Livro nao encontrado!");
+            return;
+        }
+
+        usuario.devolverLivro(livro);
+        System.out.println("Livro devolvido!");
+    }
+
+    private static void alugarLivro(Scanner input, Biblioteca biblioteca) {
+        System.out.print("Digite o seu usuario: ");
+
+        String username = input.nextLine();
+        Usuario usuario = null;
+
+        for (Usuario u : biblioteca.usuarios) {
+            if (u.username.equals(username))
+                usuario = u;
+        }
+
+        if (usuario == null) {
+            System.out.println("Usuario nao encontrado!");
+            return;
+        }
+
+        System.out.print("Digite o titulo do livro: ");
+        String titulo = input.nextLine();
+        Livro livro = null;
+
+        for (Livro l : biblioteca.livros) {
+            if (l.titulo.equals(titulo))
+                livro = l;
+        }
+
+        if (livro == null) {
+            System.out.println("Livro nao encontrado!");
+            return;
+        }
+
+        usuario.alugarLivro(livro);
+    }
+
+    private static void cadastrarUsuario(Scanner input, Biblioteca biblioteca) {
+        System.out.print("Digite o Username: ");
+        String username = input.nextLine();
+
+        System.out.print("Digite sua senha: ");
+        String senha = input.nextLine();
+
+        biblioteca.criarUsuario(username, senha);
+    }
+
+    private static void cadastrarLivro(Scanner input, Biblioteca biblioteca) {
+        System.out.println("Nome do Livro:");
+        String titulo = input.nextLine();
+
+        System.out.println("Autor do Livro:");
+        String autor = input.nextLine();
+
+        System.out.println("Editora do Livro:");
+        String editora = input.nextLine();
+
+        System.out.println("Ano de lançamento do Livro:");
+        int anoLancamento = input.nextInt();
+        
+        biblioteca.cadastrarLivro(titulo, autor, editora, anoLancamento);
+    }
+  
+   public void criarUsuario(String username, String senha)
+   {
+      Usuario novoUsuario = new Usuario(username, senha);
+      this.usuarios.add(novoUsuario);
+   }
+
+   public void cadastrarLivro(String titulo, String autor, String editora, int anoLancamento) {
+        this.livros.add(new Livro(titulo, autor, editora, anoLancamento));
+   }
+
+   public void listarLivros() {
+    for (Livro livro: livros) {
+        System.out.print(" Titulo: " + livro.pegarTitulo());
+        System.out.print(" Autor: " + livro.pegarAutor());
+        System.out.print(" Editora: " + livro.pegarEditora());
+        System.out.print(" Ano de lançamento: " + livro.pegarAno());
+
+        if (livro.pegarDisponibilidade()) {
+            System.out.println(" Livro disponivel");
+        }
+        else {
+            System.out.println(" Livro indisponivel");
+        }
+    }      
+   }
+
+   public void listarUsuarios() {
+       for (Usuario usuario : this.usuarios)
+        System.out.println(usuario.username);
+   }
+}

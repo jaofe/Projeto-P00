@@ -40,11 +40,7 @@ public class Livro{
     int pegarAno () {return ano;}
 
     void mudarDisponibilidade() {
-        if(this.disponibilidade == true) {
-            this.disponibilidade = false;
-        } else {
-            this.disponibilidade = true;
-        }
+        this.disponibilidade = !this.disponibilidade;
     }
 
     boolean pegarDisponibilidade () {return disponibilidade;}
