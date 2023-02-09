@@ -9,7 +9,7 @@ public class Biblioteca {
         Biblioteca biblioteca = new Biblioteca();
 
         try (Scanner input = new Scanner(System.in)) {
-            while(true)
+            menuLoop: while(true)
             {
                 System.out.println("--------------------------- SEJA BEM-VINDO---------------------------\n");
                 System.out.println("                                MENU\n");
@@ -23,33 +23,32 @@ public class Biblioteca {
                 System.out.print("Digite o que deseja fazer: ");
 
                 String opcao = input.nextLine();
-                System.out.print("\n");
+                System.out.println();
 
-                if(opcao.equals("1"))
-                {
-                    cadastrarUsuario(input, biblioteca);
-                }
-                else if (opcao.equals("2")) {
-                    cadastrarLivro(input, biblioteca);
-                }
-                else if (opcao.equals("3")) {
-                    listarLivros(biblioteca);
-                }
-                else if (opcao.equals("4")) {
-                    listarUsuarios(biblioteca);
-                }
-                else if (opcao.equals("5")) {
-                    alugarLivro(input, biblioteca);
-                }
-                else if (opcao.equals("6")) {
-                    devolverLivro(input, biblioteca);
-                }
-                else if (opcao.equals("7"))
-                {
-                    break;
-                }
-                else {
-                    System.out.println("Opcao invalida!");
+                switch (opcao) {
+                    case "1":
+                        cadastrarUsuario(input, biblioteca);
+                        break;
+                    case "2":
+                        cadastrarLivro(input, biblioteca);
+                        break;
+                    case "3":
+                        listarLivros(biblioteca);
+                        break;
+                    case "4":
+                        listarUsuarios(biblioteca);
+                        break;
+                    case "5":
+                        alugarLivro(input, biblioteca);
+                        break;
+                    case "6":
+                        devolverLivro(input, biblioteca);
+                        break;
+                    case "7":
+                        break menuLoop;
+                    default:
+                        System.out.println("Opcao invalida!");
+                        break;
                 }
             }
         }
@@ -60,6 +59,7 @@ public class Biblioteca {
     private static void listarLivros(Biblioteca biblioteca) {
         biblioteca.listarLivros();
     }
+
     private static void listarUsuarios(Biblioteca biblioteca) {
         biblioteca.listarUsuarios();
     }
@@ -155,35 +155,36 @@ public class Biblioteca {
         
         biblioteca.cadastrarLivro(titulo, autor, editora, anoLancamento);
     }
-  
-   public void criarUsuario(String username, String senha)
-   {
-      Usuario novoUsuario = new Usuario(username, senha);
-      this.usuarios.add(novoUsuario);
-   }
 
-   public void cadastrarLivro(String titulo, String autor, String editora, int anoLancamento) {
+
+
+    public void criarUsuario(String username, String senha) {
+        Usuario novoUsuario = new Usuario(username, senha);
+        this.usuarios.add(novoUsuario);
+    }
+
+    public void cadastrarLivro(String titulo, String autor, String editora, int anoLancamento) {
         this.livros.add(new Livro(titulo, autor, editora, anoLancamento));
-   }
+    }
 
-   public void listarLivros() {
-    for (Livro livro: livros) {
-        System.out.print(" Titulo: " + livro.pegarTitulo());
-        System.out.print(" Autor: " + livro.pegarAutor());
-        System.out.print(" Editora: " + livro.pegarEditora());
-        System.out.print(" Ano de lançamento: " + livro.pegarAno());
+    public void listarLivros() {
+        for (Livro livro: livros) {
+            System.out.print(" Titulo: " + livro.pegarTitulo());
+            System.out.print(" Autor: " + livro.pegarAutor());
+            System.out.print(" Editora: " + livro.pegarEditora());
+            System.out.print(" Ano de lançamento: " + livro.pegarAno());
 
-        if (livro.pegarDisponibilidade()) {
-            System.out.println(" Livro disponivel");
+            if (livro.pegarDisponibilidade()) {
+                System.out.println(" Livro disponivel");
+            }
+            else {
+                System.out.println(" Livro indisponivel");
+            }
         }
-        else {
-            System.out.println(" Livro indisponivel");
-        }
-    }      
-   }
+    }
 
-   public void listarUsuarios() {
-       for (Usuario usuario : this.usuarios)
-        System.out.println(usuario.username);
-   }
+    public void listarUsuarios() {
+        for (Usuario usuario : this.usuarios)
+            System.out.println(usuario.username);
+    }
 }
