@@ -3,7 +3,9 @@ import java.util.ArrayList;
 public class Usuario {
     public String username;
     public String senha;
+  
     public ArrayList<Livro> livrosAlugados = new ArrayList<>();
+    public ArrayList<Livro> livrosReservados = new ArrayList<>();
 
     public Usuario(String username, String senha) {
         this.username = username;
@@ -29,7 +31,6 @@ public class Usuario {
             livro.mudarDisponibilidade();
             this.livrosAlugados.add(livro);
             System.out.println("Livro alugado com sucesso!");
-
         }
         else {
             System.out.println("Livro indisponivel!");
@@ -49,5 +50,16 @@ public class Usuario {
                 break;
             }
         }
+    }
+
+    public void listarLivrosAlugados() {
+        
+        System.out.print(" ->" + " Titulo:");
+        
+        for (Livro livro: livrosAlugados) {
+    
+           System.out.print(" "+ livro.pegarTitulo() + " /");
+        
+        }      
     }
 }
