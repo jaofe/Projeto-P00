@@ -19,7 +19,9 @@ public class Biblioteca {
                 System.out.println("4 - Listar Usuarios");
                 System.out.println("5 - Alugar livro");
                 System.out.println("6 - Devolver livro");
-                System.out.println("7 - Sair");
+                System.out.println("7 - Buscar");
+                System.out.println("8 - Listar Livros Alugados");
+                System.out.println("9 - Sair");
                 System.out.print("Digite o que deseja fazer: ");
 
                 String opcao = input.nextLine();
@@ -45,6 +47,12 @@ public class Biblioteca {
                         devolverLivro(input, biblioteca);
                         break;
                     case "7":
+                        buscarLivro(input,biblioteca);
+                        break;
+                    case "8":
+                        listarLivrosAlugados(biblioteca);
+                        break;
+                    case "9":
                         break menuLoop;
                     default:
                         System.out.println("Opcao invalida!");
@@ -62,6 +70,11 @@ public class Biblioteca {
 
     private static void listarUsuarios(Biblioteca biblioteca) {
         biblioteca.listarUsuarios();
+    }
+
+    private static void listarLivrosAlugados(Biblioteca biblioteca)
+    {
+        biblioteca.listarLivrosAlugados();
     }
 
     private static void devolverLivro(Scanner input, Biblioteca biblioteca) {
@@ -156,7 +169,41 @@ public class Biblioteca {
         biblioteca.cadastrarLivro(titulo, autor, editora, anoLancamento);
     }
 
+    private static void buscarLivro(Scanner input, Biblioteca biblioteca)
+    {
+        System.out.print("Digite o titulo do livro: ");
+        String titulo = input.nextLine();
+        Livro livro = null;
 
+        for(Livro l : biblioteca.livros)
+        {
+            if(l.titulo.equals(titulo))
+            livro = l;
+        }
+
+        if(livro == null)
+        {
+            System.out.println("Livro nao encontrado!");
+            return;
+        }
+        else
+        {
+            System.out.print(" Titulo: " + livro.titulo);
+            System.out.print(" Autor: " + livro.autor);
+            System.out.print(" Editora: " + livro.editora);
+            System.out.print(" Ano de lançamento: " + livro.ano);
+
+            if (livro.pegarDisponibilidade() == true) {
+                System.out.println(" Livro disponivel");
+                    return;
+                }
+            else
+            {
+                System.out.println(" Livro indisponivel");
+                return;
+            }
+        }
+    }
 
     public void criarUsuario(String username, String senha) {
         Usuario novoUsuario = new Usuario(username, senha);
@@ -186,5 +233,26 @@ public class Biblioteca {
     public void listarUsuarios() {
         for (Usuario usuario : this.usuarios)
             System.out.println(usuario.username);
+    }
+
+    public void listarLivrosAlugados()
+    {
+        Usuario usuario = null;
+        int count = 0;
+
+        for (Usuario u : usuarios) {
+            usuario = u;
+            if(usuario.livrosAlugados.size() != 0)
+            {
+                System.out.print(usuario.username);
+                usuario.listarLivrosAlugados();
+                System.out.println("\n");
+                count ++;
+            }
+        }
+        if(count == 0)
+        {
+            System.out.println("Nenhum Livro Alugado!");
+        }
     }
 }
