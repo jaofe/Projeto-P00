@@ -23,7 +23,7 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "{usuario: " + this.username + " senha:" + this.senha + " livros: " + livrosAlugados + "}";
+        return "{usuario: " + this.username + " senha:" + this.senha + " livros: " + livrosAlugados +" reservas: "+ livrosReservados +"}";
     }
 
     public void alugarLivro(Livro livro) {
@@ -37,7 +37,7 @@ public class Usuario {
         }
     }
 
-    public void devolverLivro(Livro livro) {
+    public void devolverLivro(Livro livro, Biblioteca biblioteca, String user) {
         String nome = livro.titulo;
 
         for (int i = 0; i < livrosAlugados.size(); i++) {
@@ -47,6 +47,7 @@ public class Usuario {
                 atual.mudarDisponibilidade();
                 livrosAlugados.remove(i);
                 System.out.println("Livro devolvido com sucesso!");
+                buscarReserva(livro,biblioteca, user);
                 break;
             }
         }
@@ -62,4 +63,56 @@ public class Usuario {
         
         }      
     }
+
+    public void reservar(Livro livro)
+    {
+        if (livro.pegarReserva() && !livro.pegarDisponibilidade()) {
+            livro.mudarReserva();
+            this.livrosReservados.add(livro);
+            System.out.println("Livro reservado com sucesso!");
+        }
+        else if (livro.pegarReserva() && livro.pegarDisponibilidade())
+        {
+            System.out.println("Opcao invalida, livro atualmente disponivel!");
+        }
+        else if (!livro.pegarDisponibilidade() && !livro.pegarReserva())
+        {
+            System.out.println("Livro já reservado!");
+        }
+    }
+    
+    public void buscarReserva(Livro livro, Biblioteca biblioteca, String user)
+    {
+        for(Usuario u : biblioteca.usuarios)
+        {
+            if(!u.username.equals(user))
+            {
+                removerReserva(livro, u);
+            }
+        }
+    }
+
+    public void removerReserva(Livro livro, Usuario u)
+    {
+        if (livro.pegarDisponibilidade()) {
+            livro.mudarDisponibilidade();
+            u.livrosAlugados.add(livro);
+        }
+       
+        String n = livro.titulo;
+       
+        for(int j = 0;j < u.livrosReservados.size(); j++)
+        {
+            Livro aux = u.livrosReservados.get(j);
+            if(aux.titulo.equals(n))
+            {
+                aux.mudarReserva();
+                u.livrosReservados.remove(j);
+                System.out.println("Livro reservado foi alugado!");
+                break;
+            }
+        }
+    }
+
+
 }
