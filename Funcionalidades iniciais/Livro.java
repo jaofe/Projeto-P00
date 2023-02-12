@@ -5,6 +5,7 @@ public class Livro{
     public String editora;
     public int ano;
     public boolean disponibilidade;
+    public boolean reservado;
 
 
     public Livro (String a, String b, String c, int x) {
@@ -13,6 +14,7 @@ public class Livro{
         editora = c;
         ano = x;
         disponibilidade = true;
+        reservado = true;
     }
 
     void setTitulo(String titulo) {
@@ -40,8 +42,26 @@ public class Livro{
     int pegarAno () {return ano;}
 
     void mudarDisponibilidade() {
-        this.disponibilidade = !this.disponibilidade;
+        if(this.disponibilidade == true) {
+            this.disponibilidade = false;
+        } else {
+            this.disponibilidade = true;
+        }
     }
 
     boolean pegarDisponibilidade () {return disponibilidade;}
+
+    void mudarReserva()
+    {
+        if(this.reservado == true)
+        {
+            this.reservado = false;
+        }
+        else
+        {
+            this.reservado = true;
+        }
+    }
+
+    boolean pegarReserva() {return reservado;}
 }
