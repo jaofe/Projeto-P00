@@ -46,7 +46,9 @@ public class Usuario {
             if (atual.titulo.equals(nome)) {
                 atual.mudarDisponibilidade();
                 livrosAlugados.remove(i);
+
                 System.out.println("Livro devolvido com sucesso!");
+
                 buscarReserva(livro,biblioteca, user);
                 break;
             }
@@ -54,14 +56,20 @@ public class Usuario {
     }
 
     public void listarLivrosAlugados() {
+        System.out.print(username + " -> ");
+
+        if (livrosAlugados.size() > 0) {
+            System.out.print("Titulo:");
+
+            for (Livro livro: livrosAlugados) {
+               System.out.print(" "+ livro.pegarTitulo() + " /");
+            }
+        }
+        else {
+            System.out.print("Nenhum livro alugado");
+        }
         
-        System.out.print(" ->" + " Titulo:");
         
-        for (Livro livro: livrosAlugados) {
-    
-           System.out.print(" "+ livro.pegarTitulo() + " /");
-        
-        }      
     }
 
     public void reservar(Livro livro)

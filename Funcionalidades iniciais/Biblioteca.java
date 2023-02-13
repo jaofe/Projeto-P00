@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class Biblioteca {
+    ArrayList<Usuario> admins = new ArrayList<>();
     ArrayList<Usuario> usuarios = new ArrayList<>();
     ArrayList<Livro> livros = new ArrayList<> ();
 
@@ -35,8 +36,10 @@ public class Biblioteca {
     } 
 
     public void listarUsuarios() {
-        for (Usuario usuario : this.usuarios)
-            System.out.println(usuario.username);
+        for (Usuario usuario : this.usuarios) {
+            usuario.listarLivrosAlugados();
+            System.out.println();
+        }
     }
 
     public void listarLivrosAlugados()
@@ -48,7 +51,6 @@ public class Biblioteca {
             usuario = u;
             if(usuario.livrosAlugados.size() != 0)
             {
-                System.out.print(usuario.username);
                 usuario.listarLivrosAlugados();
                 System.out.println("\n");
                 count ++;
@@ -58,5 +60,26 @@ public class Biblioteca {
         {
             System.out.println("Nenhum Livro Alugado!");
         }
+    }
+
+    public void criarAdmin(String username, String senha) {
+        Usuario novoUsuario = new Usuario(username, senha);
+        this.admins.add(novoUsuario);
+    }
+
+    public void listarAdmins() {
+        for (Usuario usuario : this.admins)
+            System.out.println(usuario.username);
+    }
+
+    Livro buscarLivro(String titulo) {
+        Livro livro = null;
+    
+        for (Livro l : this.livros) {
+            if (l.titulo.equals(titulo))
+                livro = l;
+        }
+
+        return livro;
     }
 }
