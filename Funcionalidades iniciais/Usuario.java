@@ -94,7 +94,7 @@ public class Usuario {
 
     public void removerReserva(Livro livro, Usuario u)
     {
-        if (livro.pegarDisponibilidade()) {
+        if (livro.pegarDisponibilidade() && u.livrosReservados.contains(livro)) {
             livro.mudarDisponibilidade();
             u.livrosAlugados.add(livro);
         }
