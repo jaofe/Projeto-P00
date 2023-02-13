@@ -91,19 +91,19 @@ public class Main {
                     cadastrarLivro();
                     break;
                 case "3":
-                    listarLivros();
+                    biblioteca.listarLivros();
                     break;
                 case "4":
-                    listarUsuarios();
+                    biblioteca.listarUsuarios();
                     break;
                 case "5":
-                    listarAdmins();
+                    biblioteca.listarAdmins();
                     break;
                 case "6":
                     buscarLivro();
                     break;
                 case "7":
-                    listarLivrosAlugados();
+                    biblioteca.listarLivrosAlugados();
                     break;
                 case "8":
                     break menu;
@@ -135,7 +135,7 @@ public class Main {
                     buscarLivro();
                     break;
                 case "2":
-                    listarLivros();
+                    biblioteca.listarLivros();
                     break;
                 case "3":
                     alugarLivro();
@@ -144,7 +144,7 @@ public class Main {
                     devolverLivro();
                     break;
                 case "5":
-                    listarLivrosAlugados(usuario);
+                    usuario.listarLivrosAlugados();
                     break;
                 case "6":
                     reservar();
@@ -162,18 +162,9 @@ public class Main {
         System.out.print("Digite o Username: ");
         String username = input.nextLine();
 
-        for (Usuario u : biblioteca.admins) {
-            if (u.username.equals(username)){
-                System.out.println("Usuario já existente!");
-                return;
-            }
-        }
-
-        for (Usuario u : biblioteca.usuarios) {
-            if (u.username.equals(username)){
-                System.out.println("Usuario já existente!");
-                return;
-            }
+        if (biblioteca.buscarUsuario(username) != null) {
+            System.out.println("Usuario já existente!");
+            return;
         }
 
         System.out.print("Digite sua senha: ");
@@ -211,29 +202,6 @@ public class Main {
         return null;
     }
 
-    private static void listarLivros() {
-        biblioteca.listarLivros();
-    }
-
-    private static void listarUsuarios() {
-        biblioteca.listarUsuarios();
-    }
-
-    private static void listarAdmins() {
-        biblioteca.listarAdmins();
-    }
-
-    private static void listarLivrosAlugados()
-    {
-        biblioteca.listarLivrosAlugados();
-    }
-
-    private static void listarLivrosAlugados(Usuario usuario)
-    {
-        usuario.listarLivrosAlugados();
-        System.out.println();
-    }
-
     private static void devolverLivro() {
         System.out.print("Digite o titulo do livro: ");
         String titulo = input.nextLine();
@@ -266,18 +234,9 @@ public class Main {
         System.out.print("Digite o Username: ");
         String username = input.nextLine();
 
-        for (Usuario u : biblioteca.admins) {
-            if (u.username.equals(username)){
-                System.out.println("Usuario já existente!");
-                return;
-            }
-        }
-
-        for (Usuario u : biblioteca.usuarios) {
-            if (u.username.equals(username)){
-                System.out.println("Usuario já existente!");
-                return;
-            }
+        if (biblioteca.buscarUsuario(username) != null) {
+            System.out.println("Usuario já existente!");
+            return;
         }
 
         System.out.print("Digite sua senha: ");
@@ -308,58 +267,22 @@ public class Main {
     {
         System.out.print("Digite o titulo do livro: ");
         String titulo = input.nextLine();
+
         Livro livro = biblioteca.buscarLivro(titulo);
 
         if(livro == null)
-        {
             System.out.println("Livro nao encontrado!");
-            return;
-        }
+        
         else
-        {
-            System.out.print("Titulo: " + livro.titulo);
-            System.out.print(" Autor: " + livro.autor);
-            System.out.print(" Editora: " + livro.editora);
-            System.out.print(" Ano de lançamento: " + livro.ano);
-
-            if (livro.pegarDisponibilidade() && livro.pegarReserva()) {
-                System.out.println(" Livro disponivel sem possibilidade de reserva");
-            }
-            else if (!livro.pegarDisponibilidade() && livro.pegarReserva()){
-                System.out.println(" Livro indisponivel com possibilidade de reserva");
-            }
-            else if (!livro.pegarDisponibilidade() && !livro.pegarReserva())
-            {
-                System.out.println(" Livro indisponivel sem possibilidade de reserva");
-            
-            }
-        }
+            livro.printLivro();
     }
 
     private static void reservar()
     {
-        System.out.print("Digite o seu usuario: ");
-        String username = input.nextLine();
-        Usuario usuario = null;
-
-        for (Usuario u : biblioteca.usuarios) {
-            if (u.username.equals(username))
-                usuario = u;
-        }
-
-        if (usuario == null) {
-            System.out.println("Usuario nao encontrado!");
-            return;
-        }
-
         System.out.print("Digite o titulo do livro: ");
         String titulo = input.nextLine();
-        Livro livro = null;
-
-        for (Livro l : biblioteca.livros) {
-            if (l.titulo.equals(titulo))
-                livro = l;
-        }
+        
+        Livro livro = biblioteca.buscarLivro(titulo);
 
         if (livro == null) {
             System.out.println("Livro nao encontrado!");

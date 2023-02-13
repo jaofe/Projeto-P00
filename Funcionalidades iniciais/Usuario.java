@@ -69,7 +69,7 @@ public class Usuario {
             System.out.print("Nenhum livro alugado");
         }
         
-        
+        System.out.println();
     }
 
     public void reservar(Livro livro)

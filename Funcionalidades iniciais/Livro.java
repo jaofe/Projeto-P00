@@ -65,4 +65,23 @@ public class Livro{
     }
 
     boolean pegarReserva() {return reservado;}
+
+    public void printLivro() {
+        System.out.print("Titulo: " + titulo);
+        System.out.print(" Autor: " + autor);
+        System.out.print(" Editora: " + editora);
+        System.out.print(" Ano de lançamento: " + ano);
+    
+        if (disponibilidade && reservado) {
+            System.out.println(" Livro disponivel sem possibilidade de reserva");
+        }
+        else if (!disponibilidade && reservado){
+            System.out.println(" Livro indisponivel com possibilidade de reserva");
+        }
+        else if (!disponibilidade && !reservado)
+        {
+            System.out.println(" Livro indisponivel sem possibilidade de reserva");
+        
+        }
+    }
 }

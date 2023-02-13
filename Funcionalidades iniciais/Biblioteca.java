@@ -16,29 +16,13 @@ public class Biblioteca {
 
     public void listarLivros() {
         for (Livro livro: livros) {
-            System.out.print("Titulo: " + livro.pegarTitulo());
-            System.out.print(" Autor: " + livro.pegarAutor());
-            System.out.print(" Editora: " + livro.pegarEditora());
-            System.out.print(" Ano de lançamento: " + livro.pegarAno());
-
-            if (livro.pegarDisponibilidade() && livro.pegarReserva()) {
-                System.out.println(" Livro disponivel sem possibilidade de reserva");
-            }
-            else if (!livro.pegarDisponibilidade() && livro.pegarReserva()){
-                System.out.println(" Livro indisponivel com possibilidade de reserva");
-            }
-            else if (!livro.pegarDisponibilidade() && !livro.pegarReserva())
-            {
-                System.out.println(" Livro indisponivel sem possibilidade de reserva");
-            
-            }
+            livro.printLivro();
         }
     } 
 
     public void listarUsuarios() {
         for (Usuario usuario : this.usuarios) {
             usuario.listarLivrosAlugados();
-            System.out.println();
         }
     }
 
@@ -52,7 +36,7 @@ public class Biblioteca {
             if(usuario.livrosAlugados.size() != 0)
             {
                 usuario.listarLivrosAlugados();
-                System.out.println("\n");
+                System.out.println();
                 count ++;
             }
         }
@@ -81,5 +65,21 @@ public class Biblioteca {
         }
 
         return livro;
+    }
+
+    public Usuario buscarUsuario(String username) {
+        for (Usuario usuario : this.admins) {
+            if (usuario.username.equals(username)) {
+                return usuario;
+            }
+        }
+    
+        for (Usuario usuario : this.usuarios) {
+            if (usuario.username.equals(username)) {
+                return usuario;
+            }
+        }
+
+        return null;
     }
 }
