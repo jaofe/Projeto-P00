@@ -3,16 +3,17 @@ public class Livro{
     public String titulo;
     public String autor;
     public String editora;
-    public int ano;
+    public String ano;
     public boolean disponibilidade;
     public boolean reservado;
 
 
-    public Livro (String a, String b, String c, int x) {
-        titulo = a;
-        autor = b;
-        editora = c;
-        ano = x;
+    public Livro (String titulo, String autor, String editora, String ano) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.editora = editora;
+        this.ano = ano;
+        
         disponibilidade = true;
         reservado = true;
     }
@@ -35,11 +36,11 @@ public class Livro{
 
     String pegarEditora () {return editora;}
 
-    void setAno(int ano) {
+    void setAno(String ano) {
         this.ano = ano;
     }
 
-    int pegarAno () {return ano;}
+    String pegarAno () {return ano;}
 
     void mudarDisponibilidade() {
         if(this.disponibilidade == true) {
