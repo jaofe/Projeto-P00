@@ -1,3 +1,5 @@
+import java.time.*;
+
 public class Livro{
 
     public String titulo;
@@ -6,7 +8,7 @@ public class Livro{
     public String ano;
     public boolean disponibilidade;
     public boolean reservado;
-
+    public LocalDate dataDevolucao;
 
     public Livro (String titulo, String autor, String editora, String ano) {
         this.titulo = titulo;
@@ -15,6 +17,7 @@ public class Livro{
         this.ano = ano;
         
         disponibilidade = true;
+        dataDevolucao = null;
         reservado = true;
     }
 
@@ -68,20 +71,38 @@ public class Livro{
 
     public void printLivro() {
         System.out.print("Titulo: " + titulo);
-        System.out.print(" Autor: " + autor);
-        System.out.print(" Editora: " + editora);
-        System.out.print(" Ano de lançamento: " + ano);
+        System.out.print(", Autor: " + autor);
+        System.out.print(", Editora: " + editora);
+        System.out.print(", Ano de lançamento: " + ano);
     
         if (disponibilidade && reservado) {
-            System.out.println(" Livro disponivel sem possibilidade de reserva");
+            System.out.println(", Livro disponivel");
         }
         else if (!disponibilidade && reservado){
-            System.out.println(" Livro indisponivel com possibilidade de reserva");
+            System.out.print(", Livro indisponivel com possibilidade de reserva");
+            System.out.print(", Devoluçao esperada no dia: " + dataDevolucao);
+
+            if (checkarAtraso() == true) {
+                System.out.println(", Livro Atrasado.");
+            } else System.out.println(" ");
+
         }
         else if (!disponibilidade && !reservado)
         {
-            System.out.println(" Livro indisponivel sem possibilidade de reserva");
-        
+            System.out.print(", Livro indisponivel sem possibilidade de reserva");
+            System.out.print(", Devoluçao esperada no dia: " + dataDevolucao);   
+            
+            if (checkarAtraso() == true) {
+                System.out.println(", Livro Atrasado.");
+            } else System.out.println(" ");
         }
+
+    }
+
+    boolean checkarAtraso() {
+        LocalDate hoje = LocalDate.now();
+        
+        if (dataDevolucao.isBefore(hoje)) return true;
+        else return false;
     }
 }

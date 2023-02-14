@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
 public class Main {
@@ -5,6 +8,9 @@ public class Main {
     static Scanner input;
     static Usuario usuario;
     static boolean isAdmin = false;
+
+
+    
 
     public static void main(String[] args) {
         biblioteca = new Biblioteca();
@@ -77,7 +83,8 @@ public class Main {
             System.out.println("5 - Listar Administradores");
             System.out.println("6 - Buscar");
             System.out.println("7 - Listar Livros Alugados");
-            System.out.println("8 - Sair");
+            System.out.println("8 - Listar Livros Atrasados");
+            System.out.println("9 - Sair");
             System.out.print("Digite o que deseja fazer: ");
 
             String opcao = input.nextLine();
@@ -106,6 +113,9 @@ public class Main {
                     biblioteca.listarLivrosAlugados();
                     break;
                 case "8":
+                    biblioteca.listarLivrosAtrasados();
+                    break;                
+                case "9":
                     break menu;
                 default:
                     System.out.println("Opcao invalida!");
@@ -213,18 +223,57 @@ public class Main {
             return;
         }
 
+        if(livro.checkarAtraso()) {
+            LocalDate hoje = LocalDate.now();
+            long atraso = ChronoUnit.DAYS.between(livro.dataDevolucao, hoje);
+
+            System.out.println("Digite (ok) para comfirmar o pagamento da multa de R$:" + (5 + atraso*.75) + "\n(R$ 5.00 + R$ 0.75 por dia de atraso.)");
+            String ok = input.nextLine();
+            
+            if(!ok.equals("ok")) return;
+        }
+
         usuario.devolverLivro(livro,biblioteca,usuario.username);
     }
 
     private static void alugarLivro() {
+
+        for(Livro l: usuario.livrosAlugados) {
+            if(l.checkarAtraso()) {
+                System.out.println("Devido a existencia de livros atrasados, esta função está indisponivel!");
+                return;
+            }
+        }
+
+
+
         System.out.print("Digite o titulo do livro: ");
         String titulo = input.nextLine();
-        
+
         Livro livro = biblioteca.buscarLivro(titulo);
 
         if (livro == null) {
             System.out.println("Livro nao encontrado!");
             return;
+        }
+
+
+        System.out.print("Digite a data para devolução do livro (YYYY-MM-DD):");
+        String devolucao = input.nextLine();
+
+    
+        DateTimeFormatter formato = DateTimeFormatter.ISO_LOCAL_DATE;
+
+        boolean formatoCorreto = false;
+        while (!formatoCorreto) {
+            try {
+                LocalDate dataD = LocalDate.parse(devolucao, formato);
+                livro.dataDevolucao = dataD;
+                formatoCorreto = true;
+            } catch (Exception e) {
+                System.out.println("A Input não apresenta o formato correto, digite novamente a data no formato (YYYY-MM-DD)");
+                devolucao = input.nextLine();
+            }
         }
 
         usuario.alugarLivro(livro);

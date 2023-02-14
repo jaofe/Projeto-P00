@@ -46,6 +46,22 @@ public class Biblioteca {
         }
     }
 
+    public void listarLivrosAtrasados() {
+        int count = 0;
+        for(Livro l: livros) {
+            if (l.disponibilidade == false) {
+                if (l.checkarAtraso() == true) {
+                    l.printLivro();
+                    count++;
+                }
+            }
+        }
+        if(count == 0)
+        {
+            System.out.println("Nenhum Livro Atrasado!");
+        }
+    }
+
     public void criarAdmin(String username, String senha) {
         Usuario novoUsuario = new Usuario(username, senha);
         this.admins.add(novoUsuario);
