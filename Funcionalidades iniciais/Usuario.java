@@ -74,18 +74,25 @@ public class Usuario {
 
     public void reservar(Livro livro)
     {
-        if (livro.pegarReserva() && !livro.pegarDisponibilidade()) {
-            livro.mudarReserva();
-            this.livrosReservados.add(livro);
-            System.out.println("Livro reservado com sucesso!");
-        }
-        else if (livro.pegarReserva() && livro.pegarDisponibilidade())
+        if(livrosAlugados.contains(livro))
         {
-            System.out.println("Opcao invalida, livro atualmente disponivel!");
+           System.out.println("Operacao invalida!"); 
         }
-        else if (!livro.pegarDisponibilidade() && !livro.pegarReserva())
+        else
         {
-            System.out.println("Livro já reservado!");
+            if (livro.pegarReserva() && !livro.pegarDisponibilidade()) {
+                livro.mudarReserva();
+                this.livrosReservados.add(livro);
+                System.out.println("Livro reservado com sucesso!");
+            }
+            else if (livro.pegarReserva() && livro.pegarDisponibilidade())
+            {
+                System.out.println("Opcao invalida, livro atualmente disponivel!");
+            }
+            else if (!livro.pegarDisponibilidade() && !livro.pegarReserva())
+            {
+                System.out.println("Livro já reservado!");
+            }
         }
     }
     
