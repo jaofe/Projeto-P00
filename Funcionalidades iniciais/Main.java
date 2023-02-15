@@ -135,7 +135,8 @@ public class Main {
             System.out.println("5 - Listar Livros Alugados");
             System.out.println("6 - Reservar Livro");
             System.out.println("7 - Multas Pendentes");
-            System.out.println("8 - Sair");
+            System.out.println("8 - Escrever Review");
+            System.out.println("9 - Sair");
             System.out.print("Digite o que deseja fazer: ");
 
             String opcao = input.nextLine();
@@ -164,6 +165,9 @@ public class Main {
                     olharMulta();
                     break;    
                 case "8":
+                    escreverReview();
+                    break;
+                case "9":
                     break menu;
                 default:
                     System.out.println("Opcao invalida!");
@@ -227,14 +231,15 @@ public class Main {
             return;
         }
 
-        if(livro.checkarAtraso()) {
-            LocalDate hoje = LocalDate.now();
-            long atraso = ChronoUnit.DAYS.between(livro.dataDevolucao, hoje);
-
-            System.out.println("Digite (ok) para comfirmar o pagamento da multa de R$:" + (5 + atraso*.75) + "\n(R$ 5.00 + R$ 0.75 por dia de atraso.)");
-            String ok = input.nextLine();
+        if (livro.dataDevolucao != null) {
+            if(livro.checkarAtraso()) {
+                LocalDate hoje = LocalDate.now();
+                long atraso = ChronoUnit.DAYS.between(livro.dataDevolucao, hoje);
+                System.out.println("Digite (ok) para comfirmar o pagamento da multa de R$:" + (5 + atraso*.75) + "\n(R$ 5.00 + R$ 0.75 por dia de atraso.)");
+                String ok = input.nextLine();
             
-            if(!ok.equals("ok")) return;
+                if(!ok.equals("ok")) return;
+            }
         }
 
         usuario.devolverLivro(livro,biblioteca,usuario.username);
@@ -356,8 +361,17 @@ public class Main {
         if(livro == null)
             System.out.println("Livro nao encontrado!");
         
-        else
+        else {
             livro.printLivro();
+            if (livro.reviews.isEmpty()) {
+                System.out.println("Nenhuma review.");
+            } else {
+                System.out.println("Reviews:");
+                for(Review R: livro.reviews) {
+                    R.printReview();
+                }
+            }
+        }
     }
 
     private static void reservar()
@@ -373,5 +387,35 @@ public class Main {
         }
 
         usuario.reservar(livro);
+    }
+
+    private static void escreverReview() {
+        if (usuario.livrosDevolvidos.isEmpty()) {
+            System.out.println("Nenhum livro valido (devolva o livro que terminou de ler para poder escrever uma review).");
+        } else {
+            int count = 1;
+            for (Livro l: usuario.livrosDevolvidos) {
+                System.out.println(count++ + " - " + l.titulo);
+            }
+            System.out.println("Digite o número do livro que quer escrever a review: ");
+            int numl = input.nextInt();
+
+            Livro selecionado = null;
+            boolean formatoCorreto = false;
+            while (!formatoCorreto) {
+                try {
+                    selecionado = usuario.livrosDevolvidos.get(numl - 1);
+                    formatoCorreto = true;
+                } catch (Exception e) {
+                    System.out.println("A Input não apresenta o formato correto");
+                    numl = input.nextInt();
+                }
+            }
+
+            System.out.println("Digite sua review:");
+            String review = input.nextLine();
+            review = input.nextLine();
+            selecionado.reviews.add(new Review(review, usuario.username));
+        }       
     }
 }

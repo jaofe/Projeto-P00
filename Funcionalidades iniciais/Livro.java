@@ -1,4 +1,5 @@
 import java.time.*;
+import java.util.ArrayList;
 
 public class Livro{
 
@@ -9,6 +10,7 @@ public class Livro{
     public boolean disponibilidade;
     public boolean reservado;
     public LocalDate dataDevolucao;
+    public ArrayList <Review> reviews = new ArrayList<>();
 
     public Livro (String titulo, String autor, String editora, String ano) {
         this.titulo = titulo;

@@ -7,6 +7,7 @@ public class Usuario {
   
     public ArrayList<Livro> livrosAlugados = new ArrayList<>();
     public ArrayList<Livro> livrosReservados = new ArrayList<>();
+    public ArrayList<Livro> livrosDevolvidos = new ArrayList<>();
 
     public Usuario(String username, String senha) {
         this.username = username;
@@ -47,13 +48,15 @@ public class Usuario {
             if (atual.titulo.equals(nome)) {
                 atual.mudarDisponibilidade();
                 livrosAlugados.remove(i);
+                this.livrosDevolvidos.add(atual);
 
                 System.out.println("Livro devolvido com sucesso!");
 
                 buscarReserva(livro,biblioteca, user);
-                break;
+                return;
             }
         }
+        System.out.println("Você não alugou este livro!");
     }
 
     public void listarLivrosAlugados() {
