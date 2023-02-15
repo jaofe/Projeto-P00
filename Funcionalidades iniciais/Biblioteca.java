@@ -5,8 +5,8 @@ public class Biblioteca {
     ArrayList<Usuario> usuarios = new ArrayList<>();
     ArrayList<Livro> livros = new ArrayList<> ();
 
-    public void criarUsuario(String username, String senha) {
-        Usuario novoUsuario = new Usuario(username, senha);
+    public void criarUsuario(String username, String senha, String contato) {
+        Usuario novoUsuario = new Usuario(username, senha, contato);
         this.usuarios.add(novoUsuario);
     }
 
@@ -52,6 +52,17 @@ public class Biblioteca {
             if (l.disponibilidade == false) {
                 if (l.checkarAtraso() == true) {
                     l.printLivro();
+                    for (Usuario u: usuarios) {
+                        for (Livro liv: u.livrosAlugados) {
+                            if (l.titulo.equals(liv.titulo)) {
+
+                                System.out.print("O livro está com o seguinte usuario: ");
+                                System.out.println(u.username + " Forma de contato: " + u.contato);
+                                break;
+                            }
+                        }
+
+                    }
                     count++;
                 }
             }
@@ -62,14 +73,14 @@ public class Biblioteca {
         }
     }
 
-    public void criarAdmin(String username, String senha) {
-        Usuario novoUsuario = new Usuario(username, senha);
+    public void criarAdmin(String username, String senha, String contato) {
+        Usuario novoUsuario = new Usuario(username, senha, contato);
         this.admins.add(novoUsuario);
     }
 
     public void listarAdmins() {
         for (Usuario usuario : this.admins)
-            System.out.println(usuario.username);
+            System.out.println(usuario.username + " Contato: " + usuario.contato);
     }
 
     Livro buscarLivro(String titulo) {
