@@ -76,15 +76,16 @@ public class Main {
         menu: while (true) {
             System.out.println("--------------------------- SEJA BEM-VINDO ---------------------------\n");
             System.out.println("                                MENU\n");
-            System.out.println("1 - Criar Usuario Administrador");
-            System.out.println("2 - Cadastrar Livros");
-            System.out.println("3 - Listar Livros");
-            System.out.println("4 - Listar Usuarios");
-            System.out.println("5 - Listar Administradores");
-            System.out.println("6 - Buscar");
-            System.out.println("7 - Listar Livros Alugados");
-            System.out.println("8 - Listar Livros Atrasados");
-            System.out.println("9 - Sair");
+            System.out.println("1  - Criar Usuario Administrador");
+            System.out.println("2  - Cadastrar Livros");
+            System.out.println("3  - Listar Livros");
+            System.out.println("4  - Listar Usuarios");
+            System.out.println("5  - Listar Administradores");
+            System.out.println("6  - Buscar");
+            System.out.println("7  - Listar Livros Alugados");
+            System.out.println("8  - Listar Livros Atrasados");
+            System.out.println("9  - Remover Review");
+            System.out.println("10 - Sair");
             System.out.print("Digite o que deseja fazer: ");
 
             String opcao = input.nextLine();
@@ -116,6 +117,9 @@ public class Main {
                     biblioteca.listarLivrosAtrasados();
                     break;                
                 case "9":
+                    removerReview();
+                    break;
+                case "10":
                     break menu;
                 default:
                     System.out.println("Opcao invalida!");
@@ -418,4 +422,38 @@ public class Main {
             selecionado.reviews.add(new Review(review, usuario.username));
         }       
     }
+
+    private static void removerReview() {
+        System.out.println("Digite o username do usuario:");
+        String username = input.nextLine();
+        if(biblioteca.buscarUsuario(username) == null) {
+            System.out.println("Usuario não encotrado");
+            return;
+        }
+        System.out.print("Digite o titulo do livro: ");
+        String titulo = input.nextLine();
+
+        Livro livro = biblioteca.buscarLivro(titulo);
+        if(livro == null) {
+            System.out.println("Livro não encotrado");
+            return;
+        }
+        
+        int index = -1;
+        for(Review r: livro.reviews) {
+            if (r.reviewerUsername.equals(username)) {
+                index = livro.reviews.indexOf(r);
+            }
+        }
+        if (index == -1) {
+            System.out.println("Usuario não possui review desse livro.");
+            return;
+        } else {
+            livro.reviews.remove(index);
+            System.out.println("Review removida com sucesso.");
+            return;
+        }
+    }
 }
+
+
