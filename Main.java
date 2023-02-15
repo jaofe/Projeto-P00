@@ -16,7 +16,7 @@ public class Main {
         biblioteca = new Biblioteca();
         input = new Scanner(System.in);
 
-        biblioteca.admins.add(new Usuario("admin", "admin"));
+        biblioteca.admins.add(new Usuario("admin", "admin", "admin@admin.com"));
 
         do {
             loginMenu();
@@ -188,11 +188,13 @@ public class Main {
             System.out.println("Usuario já existente!");
             return;
         }
+        System.out.print("Digite forma de contato(email/telefone): ");
+        String contato = input.nextLine();
 
         System.out.print("Digite sua senha: ");
         String senha = input.nextLine();
 
-        biblioteca.criarAdmin(username, senha);
+        biblioteca.criarAdmin(username, senha, contato);
     }
 
     private static Usuario tentarLogar() {
@@ -331,10 +333,13 @@ public class Main {
             return;
         }
 
+        System.out.print("Digite forma de contato(email/telefone): ");
+        String contato = input.nextLine();
+
         System.out.print("Digite sua senha: ");
         String senha = input.nextLine();
 
-        biblioteca.criarUsuario(username, senha);
+        biblioteca.criarUsuario(username, senha, contato);
     }
 
     private static void cadastrarLivro() {

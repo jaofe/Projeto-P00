@@ -4,14 +4,16 @@ import java.util.ArrayList;
 public class Usuario {
     public String username;
     public String senha;
+    public String contato;
   
     public ArrayList<Livro> livrosAlugados = new ArrayList<>();
     public ArrayList<Livro> livrosReservados = new ArrayList<>();
     public ArrayList<Livro> livrosDevolvidos = new ArrayList<>();
 
-    public Usuario(String username, String senha) {
+    public Usuario(String username, String senha, String contato) {
         this.username = username;
         this.senha = senha;
+        this.contato = contato;
     }
 
     @Override
