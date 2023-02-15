@@ -395,7 +395,7 @@ public class Main {
 
     private static void escreverReview() {
         if (usuario.livrosDevolvidos.isEmpty()) {
-            System.out.println("Nenhum livro valido (devolva o livro que terminou de ler para poder escrever uma review).");
+            System.out.println("Nenhum livro valido (devolva um livro para poder escrever uma review).");
         } else {
             int count = 1;
             for (Livro l: usuario.livrosDevolvidos) {
