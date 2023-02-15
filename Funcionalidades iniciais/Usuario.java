@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Usuario {
@@ -59,10 +60,13 @@ public class Usuario {
         System.out.print(username + " -> ");
 
         if (livrosAlugados.size() > 0) {
-            System.out.print("Titulo:");
-
+            
             for (Livro livro: livrosAlugados) {
-               System.out.print(" "+ livro.pegarTitulo() + " /");
+                System.out.print("Titulo:");
+                System.out.print(" "+ livro.pegarTitulo());
+                if (livro.checkarAtraso() == true) {
+                    System.out.print(", Livro Atrasado. / ");
+                } else System.out.print(", Sem Atraso. / ");
             }
         }
         else {
@@ -111,6 +115,15 @@ public class Usuario {
     {
         if (livro.pegarDisponibilidade() && u.livrosReservados.contains(livro)) {
             livro.mudarDisponibilidade();
+            LocalDate hoje = LocalDate.now();
+            if(hoje.equals(livro.dataDevolucao))
+            {
+                livro.dataDevolucao = livro.dataDevolucao.plusDays(14);
+            }
+            else
+            {
+                livro.dataDevolucao = hoje.plusDays(14);
+            }
             u.livrosAlugados.add(livro);
         }
        
