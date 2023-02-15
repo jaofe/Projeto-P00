@@ -134,7 +134,8 @@ public class Main {
             System.out.println("4 - Devolver Livro");
             System.out.println("5 - Listar Livros Alugados");
             System.out.println("6 - Reservar Livro");
-            System.out.println("7 - Sair");
+            System.out.println("7 - Multas Pendentes");
+            System.out.println("8 - Sair");
             System.out.print("Digite o que deseja fazer: ");
 
             String opcao = input.nextLine();
@@ -159,7 +160,10 @@ public class Main {
                 case "6":
                     reservar();
                     break;
-                case "7":
+                case"7":
+                    olharMulta();
+                    break;    
+                case "8":
                     break menu;
                 default:
                     System.out.println("Opcao invalida!");
@@ -234,6 +238,36 @@ public class Main {
         }
 
         usuario.devolverLivro(livro,biblioteca,usuario.username);
+    }
+
+    private static void olharMulta()
+    {
+        int atrasado = 0;
+        
+        if (usuario.livrosAlugados.size() > 0) {
+            
+            for (Livro livro: usuario.livrosAlugados) {
+                if (livro.checkarAtraso() == true) {
+                    LocalDate hoje = LocalDate.now();
+                    long atraso = ChronoUnit.DAYS.between(livro.dataDevolucao, hoje);
+                    
+                    System.out.print("Titulo:");
+                    System.out.print(" "+ livro.pegarTitulo());
+                    System.out.print(" multa de R$: " + (5 + atraso*.75) + " / ");
+                    atrasado++;
+                }
+            }
+        }
+        if(atrasado == 0)
+        {
+            System.out.println("Sem multas pendentes!");
+            return;    
+        }
+        else
+        {
+            System.out.println();
+        }
+        
     }
 
     private static void alugarLivro() {
