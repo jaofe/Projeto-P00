@@ -104,7 +104,6 @@ public class Livro{
     boolean checkarAtraso() {
         LocalDate hoje = LocalDate.now();
         
-        if (dataDevolucao.isBefore(hoje)) return true;
-        else return false;
+        return (dataDevolucao.isBefore(hoje));
     }
 }
